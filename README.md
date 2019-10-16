@@ -13,8 +13,6 @@ It comprises several sub-projects:
    adapted from https://github.com/lcswillems/rl-starter-files (MIT license)
 4. `coinrun` contains the code for the main results on the coinrun domain. It is code adapted from
    https://github.com/openai/coinrun (MIT license)
-5. `saliency` is a helper library from https://github.com/PAIR-code/saliency to compute saliency
-   maps for the coinrun experiment (Apache License 2.0)
 
 # Toy Classification Taks
 To run the experiment, use
