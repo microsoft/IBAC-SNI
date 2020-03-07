@@ -311,3 +311,41 @@ register(
         'grid_size': 9 
     }
 )
+
+
+# For evaluation:
+register(
+    id='MiniGrid-MultiRoom-N1-v0',
+    entry_point='gym_minigrid.envs:MultiRoomEnv',
+    reward_threshold=1000.0,
+    kwargs = {
+        'minNumRooms': 1,
+        'maxNumRooms': 1,
+        'maxRoomSize': 6,
+        'grid_size': 11
+    }
+)
+register(
+    id='MiniGrid-MultiRoom-N2-v0',
+    entry_point='gym_minigrid.envs:MultiRoomEnv',
+    reward_threshold=1000.0,
+    kwargs = {
+        'minNumRooms': 2,
+        'maxNumRooms': 2,
+        'maxRoomSize': 6,
+        'grid_size': 11
+    }
+)
+
+
+register(
+    id='MiniGrid-MultiRoom-N3-v0',
+    entry_point='gym_minigrid.envs:MultiRoomEnv',
+    reward_threshold=1000.0,
+    kwargs = {
+        'minNumRooms': 3,
+        'maxNumRooms': 3,
+        'maxRoomSize': 6,
+        'grid_size': 11
+    }
+)
