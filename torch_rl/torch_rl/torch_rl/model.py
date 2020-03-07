@@ -13,6 +13,14 @@ class ACModel:
     def forward(self, obs):
         pass
 
+    @abstractmethod
+    def compute_run(self, obs):
+        pass
+
+    @abstractmethod
+    def compute_train(self, obs):
+        pass
+
 class RecurrentACModel(ACModel):
     recurrent = True
 

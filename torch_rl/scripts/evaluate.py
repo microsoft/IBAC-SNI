@@ -5,6 +5,10 @@ import gym
 import time
 import torch
 from torch_rl.utils.penv import ParallelEnv
+import multiprocessing
+
+if __name__ == '__main__':
+    multiprocessing.set_start_method("fork")
 
 try:
     import gym_minigrid
@@ -18,6 +22,10 @@ import utils
 parser = argparse.ArgumentParser()
 parser.add_argument("--env", required=True,
                     help="name of the environment to be run (REQUIRED)")
+parser.add_argument("--fullObs", action="store_true", default=False,
+                    help="Pass in the fully observable grid ")
+parser.add_argument("--POfullObs", action="store_true", default=False,
+                    help="Pass in the full grid but with partial observable view")
 parser.add_argument("--model", required=True,
                     help="name of the trained model (REQUIRED)")
 parser.add_argument("--episodes", type=int, default=100,
@@ -42,6 +50,10 @@ envs = []
 for i in range(args.procs):
     env = gym.make(args.env)
     env.seed(args.seed + 10000*i)
+    if args.fullObs:
+        env = gym_minigrid.wrappers.FullyObsWrapper(env)
+    elif args.POfullObs:
+        env = gym_minigrid.wrappers.PartialObsFullGridWrapper(env)
     envs.append(env)
 env = ParallelEnv(envs)
 
