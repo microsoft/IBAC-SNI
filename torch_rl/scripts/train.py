@@ -7,6 +7,7 @@ import datetime
 import torch
 import torch_rl
 import sys
+import multiprocessing
 
 try:
     import gym_minigrid
@@ -90,6 +91,9 @@ args = parser.parse_args()
 assert args.sni_type is None or args.sni_type in ['vib', 'dropout']
 
 # Define run dir
+
+if __name__ == '__main__':
+    multiprocessing.set_start_method("fork")
 
 suffix = datetime.datetime.now().strftime("%y-%m-%d-%H-%M-%S")
 default_model_name = "{}_{}_seed{}_{}".format(args.env, args.algo, args.seed, suffix)
