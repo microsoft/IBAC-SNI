@@ -47,6 +47,9 @@ sns.set_context("paper", rc=params)
 # Helpful for iterating over details in the plotting
 read_csv = False
 
+# Was the model trained with --fullObs?
+fully_observable_environment = True
+
 palette = sns.color_palette("colorblind")
 
 envs = ['MiniGrid-MultiRoom-N1-v0', 'MiniGrid-MultiRoom-N2-v0', 'MiniGrid-MultiRoom-N3-v0', ]
@@ -108,11 +111,14 @@ if not read_csv:
                 for env_idx, env_name in enumerate(envs):
                     results = np.zeros((nr_levels,))
                     env = gym.make(env_name)
+
+                    # Make the episodes comparable between all agents.
                     env.seed(0)
-                    env = gym_minigrid.wrappers.FullyObsWrapper(env)
+
+                    if fully_observable_environment:
+                        env = gym_minigrid.wrappers.FullyObsWrapper(env)
 
                     # Define agent
-
                     model_dir = utils.get_model_dir(model_name)
                     agent = utils.Agent(env_name, env.observation_space, model_dir, argmax=False)
 
