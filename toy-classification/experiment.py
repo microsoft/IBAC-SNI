@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 import torch.utils.data as utils
 import torch
@@ -7,7 +8,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from bottleneck import Bottleneck
 from utils import *
-from pprint impot pprint
+from pprint import pprint
 
 import argparse
 
@@ -17,6 +18,8 @@ parser.add_argument('--iterate_fpc', action='store_true',
                     help="Whether to vary over different numbers of functions per class")
 parser.add_argument('--iterate_dps', action='store_true',
                     help="Whether to vary over different numbers of datapoint")
+parser.add_argument('--cuda', action='store_true',
+                    help="Whether to use cuda or not")
 
 parser.add_argument('--dropout_rate', type=float,
                     help='Dropout_rate', default=0.5)
@@ -38,7 +41,7 @@ latent_size = 1024
 lr = 0.0001
 
 
-cuda = True
+cuda = args.cuda or False
 datapoint_size = 100
 num_classes = 5
 
@@ -80,7 +83,7 @@ kwargs = {
     'number_start_locations':3
 }
 
-print("Results dimensions: {}".format(results.shape))
+# print("Results dimensions: {}".format(results.shape))
 
 for seed_idx, seed in enumerate(seeds):
     kwargs['seed'] = seed
