@@ -42,7 +42,6 @@ lr = 0.0001
 
 
 cuda = args.cuda or False
-print(cuda)
 datapoint_size = 100
 num_classes = 5
 
