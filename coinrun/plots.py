@@ -166,13 +166,16 @@ experiments = {
 #     ],
 # }
 
-fig_main, ax_main = plt.subplots(1, 1)
-fig_main2, ax_main2 = plt.subplots(1, 1)
+fig_main, ax_main = plt.subplots(1, 1) # train
+fig_main2, ax_main2 = plt.subplots(1, 1) # test
+fig_main3, ax_main3 = plt.subplots(1, 1) # gap
 fig_approxkl, ax_approxkl = plt.subplots(1, 1)
 palette = sns.color_palette()
 
-for ending, marker in zip([0, 1], ['--', '-']):
-    for key_idx, key in enumerate(experiments):
+for key_idx, key in enumerate(experiments):
+    results = {}
+
+    for ending, marker in zip([0, 1], ['--', '-']):
         all_steps = []
         all_values = []
         all_approxkl_run = []
@@ -241,6 +244,8 @@ for ending, marker in zip([0, 1], ['--', '-']):
         std = np.std(all_values, 0)[::10]
         steps = all_steps[0][::10]
 
+        results[ending] = all_values
+
         # label = key if ending == 0 else None
         label = key
         if ending == 0:
@@ -268,8 +273,15 @@ for ending, marker in zip([0, 1], ['--', '-']):
             ax_approxkl.plot(steps, mean, label=key, linestyle='-.', color=palette[key_idx])
             ax_approxkl.fill_between(steps, mean+std, mean-std, alpha=0.5, color=palette[key_idx])
 
+    gen_gap = results[0] - results[1]
+    mean = np.mean(gen_gap, 0)[::10]
+    std = np.std(gen_gap, 0)[::10]
+    ax_main3.plot(steps, mean, label=label, color=palette[key_idx])
+    ax_main3.fill_between(steps, mean+std, mean-std, alpha=0.5, color=palette[key_idx])
+
 ax_main.legend(loc='upper left')
 ax_main2.legend(loc='upper left')
+ax_main3.legend(loc='upper right')
 ax_main2.set_ylim(*ylims_test)
 
 # if plotname == "Dropout_on_Plain.pdf":
@@ -278,12 +290,15 @@ ax_main.set_ylim(*ylims_train)
 
 ax_main.set_xlabel("Frames")
 ax_main2.set_xlabel("Frames")
+ax_main3.set_xlabel("Frames")
 ax_main.set_ylabel("Return")
 ax_main2.set_ylabel("Return")
+ax_main3.set_ylabel("Generalization gap")
 # if xlims is not None:
 #     ax_main.set_xlim(*xlims)
 fig_main.savefig("Train_"+plotname, bbox_inches='tight')
 fig_main2.savefig("Test_"+plotname, bbox_inches='tight')
+fig_main3.savefig("Gap_"+plotname, bbox_inches='tight')
 
 ax_approxkl.legend(loc='upper right')
 ax_approxkl.set_xlabel("Frames")
